@@ -22,7 +22,7 @@ def train(args, epoch, loader, model, optimizer, scheduler, device):
 
     criterion = nn.CrossEntropyLoss()
 
-    for i, (top, bottom, label) in enumerate(loader):
+    for i, (top, label) in enumerate(loader):
         model.zero_grad()
 
         top = top.to(device)
@@ -80,6 +80,7 @@ if __name__ == '__main__':
     parser.add_argument('--n_cond_res_block', type=int, default=3)
     parser.add_argument('--dropout', type=float, default=0.1)
     parser.add_argument('--amp', type=str, default='O0')
+    parser.add_argument('--num_workers', type=int, default=1)
     parser.add_argument('--sched', type=str)
     parser.add_argument('--ckpt', type=str)
     parser.add_argument('path', type=str)
@@ -90,9 +91,9 @@ if __name__ == '__main__':
 
     device = 'cuda'
 
-    dataset = LMDBDataset(args.path)
+    dataset = torch.load(args.path)
     loader = DataLoader(
-        dataset, batch_size=args.batch, shuffle=True, num_workers=4, drop_last=True
+        dataset, batch_size=args.batch, shuffle=True, num_workers=args.num_workers, drop_last=True
     )
 
     ckpt = {}
