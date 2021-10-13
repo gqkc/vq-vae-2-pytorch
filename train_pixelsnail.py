@@ -91,7 +91,7 @@ if __name__ == '__main__':
 
     device = 'cuda'
 
-    dataset = torch.load(args.path)
+    dataset = torch.load(args.path, map_location=device)
     loader = DataLoader(
         dataset, batch_size=args.batch, shuffle=True, num_workers=args.num_workers, drop_last=True
     )
