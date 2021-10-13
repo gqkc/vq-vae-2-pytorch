@@ -23,6 +23,7 @@ def train(args, epoch, loader, model, optimizer, scheduler, device):
     criterion = nn.CrossEntropyLoss()
 
     for i, (top, label) in enumerate(loader):
+        top, label = top.to(device), label.to(device)
         model.zero_grad()
 
         top = top.to(device)
@@ -92,7 +93,7 @@ if __name__ == '__main__':
 
     device = torch.device(args.device)
 
-    dataset = torch.load(args.path, map_location=device)
+    dataset = torch.load(args.path, map_location="cpu")
     loader = DataLoader(
         dataset, batch_size=args.batch, shuffle=True, num_workers=args.num_workers, drop_last=True
     )
