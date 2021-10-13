@@ -84,12 +84,13 @@ if __name__ == '__main__':
     parser.add_argument('--sched', type=str)
     parser.add_argument('--ckpt', type=str)
     parser.add_argument('path', type=str)
+    parser.add_argument('--device', type=str, default="cuda")
 
     args = parser.parse_args()
 
     print(args)
 
-    device = 'cuda'
+    device = torch.device(args.device)
 
     dataset = torch.load(args.path, map_location=device)
     loader = DataLoader(
@@ -105,7 +106,7 @@ if __name__ == '__main__':
     if args.hier == 'top':
         model = PixelSNAIL(
             [32, 32],
-            512,
+            8192,
             args.channel,
             5,
             4,
